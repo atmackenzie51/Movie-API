@@ -26,6 +26,7 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 
+
 //this is the main screen of the site
 app.get('/', (req, res)=>{
     res.send('Welcome to my top favorite movies!');
@@ -36,10 +37,11 @@ app.get('/movies', (req, res)=> {
     res.json(topMovies);
 });
 
-
-
-
-
+//error handling
+app.use((err, req, res, next)=> {
+    console.error(err.stack);
+    res.status(500).json({error:'Something went wrong!'});
+});
 
 
 
