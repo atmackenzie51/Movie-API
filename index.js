@@ -1,11 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-<<<<<<< Updated upstream
-
-=======
 const bodyParser = require("body-parser");
 const uuid = require("uuid");
->>>>>>> Stashed changes
 const app = express();
 const mongoose = require('mongoose');
 const Models = require("./models.js");
@@ -18,21 +14,6 @@ const Directors = Models.Director;
 mongoose.connect('mongodb://localhost:27017/cfDB', {useNewUrlParser: true, useUnifiedTopology: true});
 
 
-
-//array of 3 movies
-let topMovies =[
-    {
-        title: 'Lord of the Rings: Return of the King'
-    },
-    {
-        title: 'Harry Potter and the Goblet of Fire'
-    },
-    {
-        title: 'Rush Hour'
-    }
-];
-
-
 //setting up the logger
 app.use(morgan('common'));
 
@@ -41,18 +22,12 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 
-<<<<<<< Updated upstream
-
 //this is the main screen of the site
 app.get('/', (req, res)=>{
     res.send('Welcome to my top favorite movies!');
 });
 
-// this will show top 3 movies when movies endpoint is requested
-app.get('/movies', (req, res)=> {
-    res.json(topMovies);
-});
-=======
+
 // Get all movies
 app.get('/movies', async (req, res)=> {
     await Movies.find()
@@ -225,7 +200,6 @@ app.delete('/users/:Username', async (req, res) =>{
     });
 });
 
->>>>>>> Stashed changes
 
 //error handling
 app.use((err, req, res, next)=> {
