@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td>Return data of a specific genre</td>
-                    <td>/movies/genre/:genreName</td>
+                    <td>/movies/genres/:genreName</td>
                     <td>GET</td>
                     <td>"genre": {
                         "name": "name of the genre",
@@ -92,44 +92,57 @@
                     <td>/users</td>
                     <td>POST</td>
                     <td>
-                        "name": "name of the user",
+                        "username": "name of the user",
+                        "password": "password of user",
+                        "email": "email of user",
+                        "birthday": "birthday of user",
                         "favoriteMovies": [
                             {
-                                "title": "title of movie"
+                                "id": "uuid of movie"
                             }]
                     </td>
                     <td>"user": {
-                        "name": "name of the user",
+                        "username": "name of the user",
+                        "password": "password of user",
+                        "email": "email of user",
                         "favoriteMovies": [
                             {
-                                "title": "title of movie"
+                                "id": "uuid of movie"
                             }]
                     }</td>
                     <td>"user": {
                         "id": "value made by uuid",
                         "name": "name of the user",
+                        "password": "password of user",
+                        "email": "email of user",
                         "favoriteMovies": [
                             {
-                                "title": "title of movie"
+                                "id": "uuid of movie"
                             }]
                     }</td>
                 </tr>
                 <tr>
                     <td>Allows users to update their name</td>
-                    <td>/users/:id</td>
+                    <td>/users/:username</td>
                     <td>PUT</td>
                     <td>
                         "name": "name of the user"
                     </td>
                     <td>"user": {
-                        "name": "new name of the user"
+                        "username": "name of the user",
+                        "password": "password of user",
+                        "email": "email of user",
+                        "birthday": "birthday of user"
                     }</td>
                     <td>"user": {
                         "id": "value made by uuid",
-                        "name": "new name of the user",
+                        "username": "name of the user",
+                        "password": "password of user",
+                        "email": "email of user",
+                        "birthday": "birthday of user"
                         "favoriteMovies": [
                             {
-                                "title": "title of movie"
+                                "id": "uuid of movie"
                             }]
                     }</td>
                 </tr>
@@ -138,7 +151,7 @@
                     <td>/users/:id/:movieTitle</td>
                     <td>POST</td>
                     <td>
-                        "favoriteMovies": "Name of Movie"
+                        "favoriteMovies": "uuid of Movie"
                     </td>
                     <td>"movieTitle": "title of the movie"</td>
                     <td>"user": {
@@ -146,16 +159,16 @@
                         "name": "new name of the user",
                         "favoriteMovies": [
                             {
-                                "title": "title of movie"
+                                "id": "uuid of movie"
                             }]
                     }</td>
                 </tr>
                 <tr>
                     <td>Allows users to delete their favorite movie</td>
-                    <td>/users/:id/:movieTitle</td>
+                    <td>/users/:username/movies/:movieID</td>
                     <td>DELETE</td>
                     <td>
-                        "favoriteMovies": "movie title to remove"
+                        "favoriteMovies": "movieUUID to remove"
                     </td>
                     <td>"title": "movie title"</td>
                     <td>Movie title was deleted from user's favorite list</td>
