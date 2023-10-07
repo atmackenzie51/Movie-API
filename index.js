@@ -5,7 +5,7 @@ const uuid = require("uuid");
 const app = express();
 const mongoose = require('mongoose');
 const Models = require("./models.js");
-const {check, validationResults} = require("express-validator");
+const {check, validationResult} = require("express-validator");
 
 
 
