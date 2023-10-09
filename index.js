@@ -208,7 +208,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 }*/
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.Username !== req.params.Username) {
-        return res.status(400).send('Permission Denied!');
+        return res.status(404).send('Permission Denied!');
     }
 
     await Users.findOneAndUpdate({ Username: req.params.Username },
@@ -235,13 +235,13 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 // Delete a user by username
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.Username !== req.params.Username) {
-        return res.status(400).send('Permission Denied!');
+        return res.status(404).send('Permission Denied!');
     }
 
     await Users.findOneAndRemove({ Username: req.params.Username })
         .then((user) => {
             if (!user) {
-                res.status(400).send(req.params.Username + ' was not found');
+                res.status(404).send(req.params.Username + ' was not found');
             } else {
                 res.status(200).send(req.params.Username + ' was deleted.');
             }
@@ -279,7 +279,7 @@ app.get('/movies/:title', (req, res) => {
     if (movie) {
         res.status(200).json(movie);
     } else {
-        res.status(400).send('movie does not exist')
+        res.status(404).send('movie does not exist')
     };
 });
 
@@ -291,7 +291,7 @@ app.get('/movies/genre/:genreName', (req, res) => {
     if (genre) {
         res.status(200).json(genre);
     } else {
-        res.status(400).send('genre does not exist')
+        res.status(404).send('genre does not exist')
     };
 });
 
@@ -303,7 +303,7 @@ app.get('/movies/directors/:directorName', (req, res) => {
     if (director) {
         res.status(200).json(director);
     } else {
-        res.status(400).send('director cannot be found')
+        res.status(404).send('director cannot be found')
     };
 });
 
@@ -318,7 +318,7 @@ app.post('/users', (req, res) => {
 
     } else {
         const message = 'missing username in request body';
-        res.status(400).send(message);
+        res.status(404).send(message);
     }
 });
 
