@@ -1,4 +1,5 @@
-# Project Title: myFlix Database - Movie Application
+# Project Title:
+> myFlix Database - Movie Application
 
 ## Goal:
 > To build the server-side component of a “movies” database application based on a prepopulated list of movies that I chose. This would provide users the ability to look up movies, genres, and directors of specific movies stored in the database. Additionally, users would be required to create a “profile” with a username, password, email, and DOB that would be stored in the database. Users would be able to add movies to their favorites list as well.
