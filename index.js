@@ -32,7 +32,7 @@ require('./passport');
 
 let allowedOrigins = [
     'https://localhost:8080',
-    'https://localhost:1234',
+    'http://localhost:1234',
     'https://movieflix-app-d827ee527a6d.herokuapp.com'
 ];
 
