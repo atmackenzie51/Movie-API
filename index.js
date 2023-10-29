@@ -30,7 +30,12 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-let allowedOrigins = ['https://localhost:8080', 'https://movieflix-app-d827ee527a6d.herokuapp.com', 'https://localhost:1234'];
+let allowedOrigins = [
+    'https://localhost:8080',
+    'https://localhost:1234',
+    'https://movieflix-app-d827ee527a6d.herokuapp.com'
+];
+
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin) return callback(null, true);
