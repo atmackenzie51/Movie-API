@@ -55,7 +55,19 @@ app.get('/', (req, res) => {
 //Below is all the GET requests
 // Get all movies
 //Removing authentication for Exercise 3.4 of Achievement 3
-/*app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    await Movies.find()
+        .then((movies) => {
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+//Authentication removed
+/*app.get('/movies', async (req, res) => {
     await Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -66,17 +78,6 @@ app.get('/', (req, res) => {
         });
 });
 */
-//Authentication removed
-app.get('/movies', async (req, res) => {
-    await Movies.find()
-        .then((movies) => {
-            res.status(201).json(movies);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
 
 // Get movie data by movie title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
