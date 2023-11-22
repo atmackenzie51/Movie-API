@@ -14,7 +14,7 @@ passport.use(
             passwordField: 'Password',
         },
         async (username, password, callback) => {
-            console.log(`${username} ${password}`);
+            console.log('Received credentials', `${username} ${password}`);
             await Users.findOne({ Username: username })
                 .then((user) => {
                     if (!user) {
@@ -46,9 +46,11 @@ passport.use(new JWTStrategy({
 }, async (jwtPayload, callback) => {
     return await Users.findById(jwtPayload._id)
         .then((user) => {
+            console.log('user found', user);
             return callback(null, user);
         })
         .catch((error) => {
+            console.log('Error during JWT auth', error);
             return callback(error)
         });
 }));
