@@ -6,7 +6,7 @@ const app = express();
 const mongoose = require('mongoose');
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
-
+const cors = require("cors");
 
 
 const Movies = Models.Movie;
@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Authenication
-const cors = require("cors");
+
 app.use(cors());
-let auth = require('./auth')(app);
+let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport');
 
