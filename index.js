@@ -232,24 +232,33 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     return res.status(404).send('Permission Denied!');
   }
 
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  await Users.findOneAndUpdate({ Username: req.params.Username },
-    {
-      $set: {
-        Username: req.body.Username,
-        Password: hashedPassword,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday,
+  let updatedProfile = {
+    Username: req.body.Username,
+    Email: req.body.Email,
+    Birthday: req.body.Birthday
+  }
+
+  if (req.body.Password) {
+    updatedProfile.Password = Users.hashPassword(req.body.Password);
+
+    await Users.findOneAndUpdate({ Username: req.params.Username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: updatedProfile.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        },
       },
-    },
-    { new: true }) //this makes sure that the updated document is returned
-    .then((updatedUser) => {
-      res.json(updatedUser);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    })
+      { new: true }) //this makes sure that the updated document is returned
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      })
+  }
 });
 
 
