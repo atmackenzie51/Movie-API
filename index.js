@@ -228,9 +228,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
     Birthday: Date
 }*/
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  if (req.user.Username !== req.params.Username) {
-    return res.status(404).send('Permission Denied!');
-  }
+  // if (req.user.Username !== req.params.Username) {
+  //   return res.status(404).send('Permission Denied!');
+  // }
 
   //sets the parameters that can be updated
   let updatedProfile = {
