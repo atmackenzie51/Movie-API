@@ -232,23 +232,20 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     return res.status(404).send('Permission Denied!');
   }
 
+  //sets the parameters that can be updated
   let updatedProfile = {
     Username: req.body.Username,
     Email: req.body.Email,
     Birthday: req.body.Birthday
   }
 
+  //check if a new password is defined, if so, hashes the new password
   if (req.body.Password) {
     updatedProfile.Password = Users.hashPassword(req.body.Password);
 
     await Users.findOneAndUpdate({ Username: req.params.Username },
       {
-        $set: {
-          Username: updatedProfile.Username,
-          Password: updatedProfile.Password,
-          Email: updatedProfile.Email,
-          Birthday: updatedProfile.Birthday,
-        },
+        $set: updatedProfile,
       },
       { new: true }) //this makes sure that the updated document is returned
       .then((updatedUser) => {
