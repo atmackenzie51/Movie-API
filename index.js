@@ -26,28 +26,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Authenication
 
-// app.use(cors());
-// let auth = require('./auth.js')(app);
-// const passport = require('passport');
-// require('./passport');
+app.use(cors());
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport');
 
 
-let allowedOrigins = [
-  'https://localhost:8080',
-  'http://localhost:1234',
-  'https://movieflix-app-d827ee527a6d.herokuapp.com'
-];
+// let allowedOrigins = [
+//   'https://localhost:8080',
+//   'http://localhost:1234',
+//   'https://movieflix-app-d827ee527a6d.herokuapp.com'
+// ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) { //if a specific origin is not found on the list of allowed origins
-      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin) return callback(null, true);
+//     if (allowedOrigins.indexOf(origin) === -1) { //if a specific origin is not found on the list of allowed origins
+//       let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+//       return callback(new Error(message), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 //this is the main screen of the site
 app.get('/', (req, res) => {
