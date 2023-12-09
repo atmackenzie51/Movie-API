@@ -234,7 +234,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
   //sets the parameters that can be updated
   let updatedProfile = {
-    Username: req.body.Username,
+    //Username: req.body.Username,
     Email: req.body.Email,
     Birthday: req.body.Birthday
   }
@@ -243,6 +243,12 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
   if (req.body.Password) {
     updatedProfile.Password = Users.hashPassword(req.body.Password);
   }
+
+  //checks if a username is defined, if so, it sets the new username
+  if (req.body.Username) {
+    updatedProfile.Username = req.body.Username;
+  }
+
   await Users.findOneAndUpdate({ Username: req.params.Username },
     {
       $set: updatedProfile,
