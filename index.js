@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 const cors = require("cors");
+const moment = require("moment");
 
 
 const Movies = Models.Movie;
@@ -241,6 +242,9 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     updatedProfile.Password = Users.hashPassword(req.body.Password);
   }
 
+  // Format the new birthday using Moment.js
+  const formattedBirthday = req.body.Birthday ? moment(req.body.Birthday).toISOString() : null;
+
   await Users.findOneAndUpdate({ Username: req.params.Username },
     {
       $set:
@@ -248,11 +252,14 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
         Username: req.body.Username || oldProfile.Username,
         Password: updatedProfile.Password || req.body.Password,
         Email: req.body.Email || oldProfile.Email,
-        Birthday: req.body.Birthday || oldProfile.Birthday
+        Birthday: formattedBirthday || oldProfile.Birthday
       }
     },
     { new: true }) //this makes sure that the updated document is returned
     .then((updatedUser) => {
+      // Format the birthdays in the updated user before sending the response
+      updatedUser.Birthday = formattedBirthday ? moment(formattedBirthday).format('YYYY-MM-DD') : null;
+      updatedUser.oldProfileBirthday = oldProfile.Birthday ? moment(oldProfile.Birthday).format('YYYY-MM-DD') : null;
       res.json(updatedUser);
     })
     .catch((err) => {
