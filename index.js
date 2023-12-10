@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const Models = require("./models.js");
 const { check, validationResult } = require("express-validator");
 const cors = require("cors");
-const moment = require("moment");
+const moment = require("moment-timezone");
 
 
 const Movies = Models.Movie;
