@@ -255,8 +255,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     { new: true }) //this makes sure that the updated document is returned
     .then((updatedUser) => {
       // Format the birthdays in the updated user before sending the response
-      updatedUser.Birthday = req.body.Birthday ? moment(req.body.Birthday).format('YYYY-MM-DD') : null;
-      updatedUser.oldProfileBirthday = oldProfile.Birthday ? moment(oldProfile.Birthday).format('YYYY-MM-DD') : null;
+      updatedUser.Birthday = req.body.Birthday ? moment(req.body.Birthday).tz('YourServerTimeZone').format('YYYY-MM-DD') : null;
+      updatedUser.oldProfileBirthday = oldProfile.Birthday ? moment(oldProfile.Birthday).tz('YourServerTimeZone').format('YYYY-MM-DD') : null;
       res.json(updatedUser);
     })
     .catch((err) => {
