@@ -241,7 +241,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     updatedProfile.Password = Users.hashPassword(req.body.Password);
   }
 
-  let updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username },
+  await Users.findOneAndUpdate({ Username: req.params.Username },
     {
       $set:
       {
