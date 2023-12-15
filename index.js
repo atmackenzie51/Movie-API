@@ -138,7 +138,12 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
   await Users.findOne({ Username: req.params.Username })
     .then((user) => {
-      res.json(user);
+      // Convert the Birthday field to the user's local timezone
+      const userWithLocalTimezone = {
+        ...user.toObject(),
+        Birthday: user.Birthday ? moment(user.Birthday).tz('America/New_York').format('YYYY-MM-DD') : null,
+      };
+      res.json(userWithLocalTimezone);
     })
     .catch((err) => {
       console.error(err);
