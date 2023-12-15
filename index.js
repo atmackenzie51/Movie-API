@@ -138,12 +138,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
   await Users.findOne({ Username: req.params.Username })
     .then((user) => {
-      // Convert the Birthday field to the user's local timezone
-      const userWithLocalTimezone = {
-        ...user.toObject(),
-        Birthday: user.Birthday ? moment(user.Birthday).tz('America/New_York').format('YYYY-MM-DD') : null,
-      };
-      res.json(userWithLocalTimezone);
+      res.json(user);
     })
     .catch((err) => {
       console.error(err);
@@ -259,9 +254,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     },
     { new: true }) //this makes sure that the updated document is returned
     .then((updatedUser) => {
-      // Format the birthdays in the updated user before sending the response
-      updatedUser.Birthday = req.body.Birthday ? moment(req.body.Birthday).tz('America/New_York').format('YYYY-MM-DD') : null;
-      updatedUser.oldProfileBirthday = oldProfile.Birthday ? moment(oldProfile.Birthday).tz('America/New_York').format('YYYY-MM-DD') : null;
       res.json(updatedUser);
     })
     .catch((err) => {
