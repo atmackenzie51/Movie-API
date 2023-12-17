@@ -94,27 +94,6 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
     });
 });
 
-// Get movie data by ID
-app.get('/movies/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const movieID = req.params.id;
-  console.log('Searching for movie with ID:', movieID);
-
-  try {
-    const movie = await Movies.findOne({ '_id': movieID });
-
-    if (!movie) {
-      console.log('Movie not found.');
-      return res.status(404).send('Movie not found');
-    }
-
-    console.log('Found movie:', movie);
-    res.json(movie);
-  } catch (err) {
-    console.error('Error:', err);
-    res.status(500).send('Error: ' + err);
-  }
-});
-
 // Get movie data by genre
 app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ 'Genre.Name': req.params.Name })
