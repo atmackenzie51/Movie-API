@@ -95,8 +95,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
 });
 
 // Get movie data by ID
-app.get('/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const movieID = req.params.MovieID;
+app.get('/movies/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const movieID = req.params.id;
   console.log('Searching for movie with ID:', movieID);
 
   try {
