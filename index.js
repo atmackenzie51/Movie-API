@@ -96,7 +96,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
 
 // Get movie data by ID
 app.get('/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({ 'MovieID': req.params.MovieID })
+  await Movies.findOne({ '_id': req.params.MovieID })
     .then((movie) => {
       res.json(movie);
     })
