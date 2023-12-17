@@ -94,6 +94,18 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
     });
 });
 
+// Get movie data by ID
+app.get('/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  await Movies.findOne({ 'MovieID': req.params.MovieID })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // Get movie data by genre
 app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ 'Genre.Name': req.params.Name })
