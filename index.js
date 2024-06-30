@@ -216,9 +216,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 
-//PUT requests
-// Update a user's info by username
-/* expect in the following json format
+/** PUT requests
+ Update a user's info by username
+ expect in the following json format
 {
     Username: String,
     (required)
@@ -227,7 +227,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
     Email: String,
     (required)
     Birthday: Date
-}*/
+}**/
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   // if (req.user.Username !== req.params.Username) {
   //   return res.status(404).send('Permission Denied!');
