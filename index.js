@@ -9,24 +9,22 @@ const { check, validationResult } = require("express-validator");
 const cors = require("cors");
 const moment = require("moment-timezone");
 
-
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// mongoose.connect('mongodb://127.0.0.1:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// Connect to MongoDB
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-//setting up the logger
+// Setting up the logger
 app.use(morgan('common'));
 
-//setting the static files
+// Serving static files
 app.use(express.static('public'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//Authenication
-
+// Authentication
 app.use(cors());
 let auth = require('./auth.js')(app);
 const passport = require('passport');
@@ -51,13 +49,26 @@ require('./passport');
 // }));
 
 //this is the main screen of the site
+// Main screen of the site
+/**
+ * Main screen of the site
+ * @name /
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix Application!');
 });
 
-//Below is all the GET requests
 // Get all movies
-//Removing authentication for Exercise 3.4 of Achievement 3
+/**
+ * Get all movies
+ * @name /movies
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
     .then((movies) => {
@@ -69,20 +80,14 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
     });
 });
 
-//Authentication removed
-/*app.get('/movies', async (req, res) => {
-    await Movies.find()
-        .then((movies) => {
-            res.status(201).json(movies);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
-*/
-
 // Get movie data by movie title
+/**
+ * Get movie data by movie title
+ * @name /movies/:Title
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ _id: req.params.Title })
     .then((movies) => {
@@ -95,6 +100,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
 });
 
 // Get movie data by genre
+/**
+ * Get movie data by genre
+ * @name /movies/genres/:Name
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ 'Genre.Name': req.params.Name })
     .then((movies) => {
@@ -107,6 +119,13 @@ app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false })
 });
 
 // Get data about a director by name
+/**
+ * Get data about a director by name
+ * @name /movies/directors/:Name
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ 'Director.Name': req.params.Name })
     .then((movies) => {
@@ -119,6 +138,13 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 });
 
 // Get all users
+/**
+ * Get all users
+ * @name /users
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.find()
     .then((users) => {
@@ -131,6 +157,13 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 });
 
 // Get a user by username
+/**
+ * Get a user by username
+ * @name /users/:Username
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission Denied!');
@@ -146,17 +179,18 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
     });
 });
 
-
-//POST requests
-//Creating a new user
-/* we will expect json in this format
-{
-    ID: Integer,
-    Username: String,
-    Password: String,
-    Email: String,
-    Birthday: Date
-}*/
+// Create a new user
+/**
+ * Create a new user
+ * @name /users
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} Username - The username of the user.
+ * @param {string} Password - The password of the user.
+ * @param {string} Email - The email of the user.
+ * @param {date} Birthday - The birthday of the user.
+ */
 app.post('/users',
   [
     check('Username', 'Username is required.').isLength({ min: 5 }),
@@ -196,7 +230,16 @@ app.post('/users',
       });
   });
 
-// adding a movie to a user's favorites list
+// Add a movie to a user's favorites list
+/**
+ * Add a movie to a user's favorites list
+ * @name /users/:Username/movies/:MovieID
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} Username - The username of the user.
+ * @param {string} MovieID - The ID of the movie.
+ */
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission Denied!');
@@ -215,29 +258,24 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
     });
 });
 
-
-/** PUT requests
+// Update a user's info by username
+/**
  * Update a user's info by username
- * expect in the following json format
-* {
-    * Username: String,
-    * (required)
-    * Password: String,
-    * (required)
-    * Email: String,
-    * (required)
-    * Birthday: Date
-* } **/
+ * @name /users/:Username
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} Username - The username of the user.
+ * @param {string} Password - The password of the user.
+ * @param {string} Email - The email of the user.
+ * @param {date} Birthday - The birthday of the user.
+ */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  // if (req.user.Username !== req.params.Username) {
-  //   return res.status(404).send('Permission Denied!');
-  // }
-
   let oldProfile = await Users.findOne({ Username: req.params.Username });
 
   let updatedProfile = {};
 
-  //check if a new password is defined, if so, hashes the new password
+  // Check if a new password is defined, if so, hashes the new password
   if (req.body.Password) {
     updatedProfile.Password = Users.hashPassword(req.body.Password);
   }
@@ -252,7 +290,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
         Birthday: req.body.Birthday || oldProfile.Birthday
       }
     },
-    { new: true }) //this makes sure that the updated document is returned
+    { new: true }) // This makes sure that the updated document is returned
     .then((updatedUser) => {
       res.json(updatedUser);
     })
@@ -263,9 +301,15 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 }
 );
 
-
-//DELETE requests
 // Delete a user by username
+/**
+ * Delete a user by username
+ * @name /users/:Username
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} Username - The username of the user.
+ */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(404).send('Permission Denied!');
@@ -285,7 +329,16 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
-// removing a movie to a user's favorites list
+// Remove a movie from a user's favorites list
+/**
+ * Remove a movie from a user's favorites list
+ * @name /users/:Username/movies/:MovieID
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} Username - The username of the user.
+ * @param {string} MovieID - The ID of the movie.
+ */
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission Denied!');
@@ -304,7 +357,15 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
     });
 });
 
-//search movies by title
+// Search movies by title
+/**
+ * Search movies by title
+ * @name /movies/:title
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} title - The title of the movie.
+ */
 app.get('/movies/:title', (req, res) => {
   const { title } = req.params;
   const movie = movies.find(movie => movie.Title === title);
@@ -316,7 +377,15 @@ app.get('/movies/:title', (req, res) => {
   };
 });
 
-//search movies by genre
+// Search movies by genre
+/**
+ * Search movies by genre
+ * @name /movies/genre/:genreName
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} genreName - The name of the genre.
+ */
 app.get('/movies/genre/:genreName', (req, res) => {
   const { genreName } = req.params;
   const genre = movies.find(movie => movie.Genre.Name === genreName).Genre;
@@ -328,7 +397,15 @@ app.get('/movies/genre/:genreName', (req, res) => {
   };
 });
 
-//search movies by director
+// Search movies by director
+/**
+ * Search movies by director
+ * @name /movies/directors/:directorName
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} directorName - The name of the director.
+ */
 app.get('/movies/directors/:directorName', (req, res) => {
   const { directorName } = req.params;
   const director = movies.find(movie => movie.Director.Name === directorName).Director;
@@ -340,7 +417,14 @@ app.get('/movies/directors/:directorName', (req, res) => {
   };
 });
 
-//users can register
+// Users can register
+/**
+ * Users can register
+ * @name /users
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.post('/users', (req, res) => {
   const newUser = req.body;
 
@@ -355,7 +439,15 @@ app.post('/users', (req, res) => {
   }
 });
 
-//users can update their user info
+// Users can update their user info
+/**
+ * Users can update their user info
+ * @name /users/:id
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} id - The ID of the user.
+ */
 app.put('/users/:id', (req, res) => {
   const { id } = req.params;
   const updatedUser = req.body;
@@ -371,7 +463,16 @@ app.put('/users/:id', (req, res) => {
 
 });
 
-//users can add a movie to their favorites
+// Users can add a movie to their favorites
+/**
+ * Users can add a movie to their favorites
+ * @name /users/:id/:movieTitle
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} id - The ID of the user.
+ * @param {string} movieTitle - The title of the movie.
+ */
 app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
@@ -386,7 +487,16 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 
 });
 
-//users can delete a movie from their favorites
+// Users can delete a movie from their favorites
+/**
+ * Users can delete a movie from their favorites
+ * @name /users/:id/:movieTitle
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} id - The ID of the user.
+ * @param {string} movieTitle - The title of the movie.
+ */
 app.delete('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
@@ -401,8 +511,15 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
 
 });
 
-
-//users can delete their user account
+// Users can delete their user account
+/**
+ * Users can delete their user account
+ * @name /users/:id
+ * @function
+ * @memberof module:routes
+ * @inner
+ * @param {string} id - The ID of the user.
+ */
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   let user = users.find(user => user.id == id);
@@ -415,18 +532,27 @@ app.delete('/users/:id', (req, res) => {
   }
 });
 
-
-
-
-//error handling
+// Error handling
+/**
+ * Error handling middleware
+ * @name ErrorHandling
+ * @function
+ * @memberof module:middleware
+ * @inner
+ */
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-
-
-// listens for requests
+// Listen for requests
+/**
+ * Listen for requests
+ * @name Listen
+ * @function
+ * @memberof module:server
+ * @inner
+ */
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
