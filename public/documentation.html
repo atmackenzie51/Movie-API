@@ -2,189 +2,220 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>myFlix Application</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myFlix Application API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>myFlix Documentation Page</h1>
-    <p>This goal of this API is to allow you to return a list of movies to as well as information about those movies to
-        users.</p>
+    <h1>myFlix API Documentation</h1>
+    <p>This API provides endpoints to retrieve information about movies and manage user data.</p>
 
-        <table>
-            <thead>
-                <tr>
-                    <td>Business Logic</td>
-                    <td>URL</td>
-                    <td>HTTP Method</td>
-                    <td>Query Parameters</td>
-                    <td>Request Body Data Format</td>
-                    <td>Response Body Data Format</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Return a list of all movies</td>
-                    <td>/movies</td>
-                    <td>GET</td>
-                    <td>none</td>
-                    <td>none</td>
-                    <td>JSON object holding data of all movies</td>
-                </tr>
-                <tr>
-                    <td>Return data of a movie by its title</td>
-                    <td>/movies/:title</td>
-                    <td>GET</td>
-                    <td>
-                        title: title.name
-                    </td>
-                    <td>none</td>
-                    <td>
-                        {
-                            "title": "movie title",
-                            "description": "description of movie",
-                            "genre": {
-                                "id": "value made by uuid",
-                                "name": "name of the genre",
-                                "description": "description of the genre"
-                            }, 
-                            "director": {
-                                "id": "value made by uuid",
-                                "name": "name of director",
-                                "birth": "year the director was born"
-                            },
-                            "image_Url": "URL of the movie cover"
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td>Return data of a specific genre</td>
-                    <td>/movies/genres/:genreName</td>
-                    <td>GET</td>
-                    <td>"genre": {
-                        "name": "name of the genre",
+    <table>
+        <thead>
+            <tr>
+                <th>Business Logic</th>
+                <th>URL</th>
+                <th>HTTP Method</th>
+                <th>Query Parameters</th>
+                <th>Request Body Data Format</th>
+                <th>Response Body Data Format</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Return a list of all movies</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>none</td>
+                <td>none</td>
+                <td>JSON object holding data of all movies</td>
+            </tr>
+            <tr>
+                <td>Return data of a movie by its title</td>
+                <td>/movies/:title</td>
+                <td>GET</td>
+                <td>title: title.name</td>
+                <td>none</td>
+                <td>
+                    {
+                    "title": "movie title",
+                    "description": "description of movie",
+                    "genre": {
+                    "id": "value made by uuid",
+                    "name": "name of the genre",
+                    "description": "description of the genre"
+                    },
+                    "director": {
+                    "id": "value made by uuid",
+                    "name": "name of director",
+                    "birth": "year the director was born"
+                    },
+                    "image_Url": "URL of the movie cover"
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Return data of a specific genre</td>
+                <td>/movies/genres/:genreName</td>
+                <td>GET</td>
+                <td>"genre": {
+                    "name": "name of the genre",
                     }</td>
-                    <td>none</td>
-                    <td>"genre": {
-                        "id": "value made by uuid",
-                        "name": "name of the genre",
-                        "description": "description of the genre"
+                <td>none</td>
+                <td>"genre": {
+                    "id": "value made by uuid",
+                    "name": "name of the genre",
+                    "description": "description of the genre"
                     }</td>
-                </tr>
-                <tr>
-                    <td>Return data of a specific director</td>
-                    <td>/movies/directors/:directorName</td>
-                    <td>GET</td>
-                    <td>"director": {
-                        "name": "name of the director",
+            </tr>
+            <tr>
+                <td>Return data of a specific director</td>
+                <td>/movies/directors/:directorName</td>
+                <td>GET</td>
+                <td>"director": {
+                    "name": "name of the director",
                     }</td>
-                    <td>none</td>
-                    <td>"director": {
-                        "id": "value made by uuid",
-                        "name": "name of director",
-                        "birth": "year the director was born"
+                <td>none</td>
+                <td>"director": {
+                    "id": "value made by uuid",
+                    "name": "name of director",
+                    "birth": "year the director was born"
                     }</td>
-                </tr>
-                <tr>
-                    <td>Allows new users to register</td>
-                    <td>/users</td>
-                    <td>POST</td>
-                    <td>
-                        "username": "name of the user",
-                        "password": "password of user",
-                        "email": "email of user",
-                        "birthday": "birthday of user",
-                        "favoriteMovies": [
-                            {
-                                "id": "uuid of movie"
-                            }]
-                    </td>
-                    <td>"user": {
-                        "username": "name of the user",
-                        "password": "password of user",
-                        "email": "email of user",
-                        "favoriteMovies": [
-                            {
-                                "id": "uuid of movie"
-                            }]
+            </tr>
+            <tr>
+                <td>Allows new users to register</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>
+                    "username": "name of the user",
+                    "password": "password of user",
+                    "email": "email of user",
+                    "birthday": "birthday of user",
+                    "favoriteMovies": [
+                    {
+                    "id": "uuid of movie"
+                    }]
+                </td>
+                <td>"user": {
+                    "username": "name of the user",
+                    "password": "password of user",
+                    "email": "email of user",
+                    "favoriteMovies": [
+                    {
+                    "id": "uuid of movie"
+                    }]
                     }</td>
-                    <td>"user": {
-                        "id": "value made by uuid",
-                        "name": "name of the user",
-                        "password": "password of user",
-                        "email": "email of user",
-                        "favoriteMovies": [
-                            {
-                                "id": "uuid of movie"
-                            }]
+                <td>"user": {
+                    "id": "value made by uuid",
+                    "name": "name of the user",
+                    "password": "password of user",
+                    "email": "email of user",
+                    "favoriteMovies": [
+                    {
+                    "id": "uuid of movie"
+                    }]
                     }</td>
-                </tr>
-                <tr>
-                    <td>Allows users to update their name</td>
-                    <td>/users/:username</td>
-                    <td>PUT</td>
-                    <td>
-                        "name": "name of the user"
-                    </td>
-                    <td>"user": {
-                        "username": "name of the user",
-                        "password": "password of user",
-                        "email": "email of user",
-                        "birthday": "birthday of user"
+            </tr>
+            <tr>
+                <td>Allows users to update their name</td>
+                <td>/users/:username</td>
+                <td>PUT</td>
+                <td>
+                    "name": "name of the user"
+                </td>
+                <td>"user": {
+                    "username": "name of the user",
+                    "password": "password of user",
+                    "email": "email of user",
+                    "birthday": "birthday of user"
                     }</td>
-                    <td>"user": {
-                        "id": "value made by uuid",
-                        "username": "name of the user",
-                        "password": "password of user",
-                        "email": "email of user",
-                        "birthday": "birthday of user"
-                        "favoriteMovies": [
-                            {
-                                "id": "uuid of movie"
-                            }]
+                <td>"user": {
+                    "id": "value made by uuid",
+                    "username": "name of the user",
+                    "password": "password of user",
+                    "email": "email of user",
+                    "birthday": "birthday of user"
+                    "favoriteMovies": [
+                    {
+                    "id": "uuid of movie"
+                    }]
                     }</td>
-                </tr>
-                <tr>
-                    <td>Allows users to add their favorite movies</td>
-                    <td>/users/:id/:movieTitle</td>
-                    <td>POST</td>
-                    <td>
-                        "favoriteMovies": "uuid of Movie"
-                    </td>
-                    <td>"movieTitle": "title of the movie"</td>
-                    <td>"user": {
-                        "id": "value made by uuid",
-                        "name": "new name of the user",
-                        "favoriteMovies": [
-                            {
-                                "id": "uuid of movie"
-                            }]
+            </tr>
+            <tr>
+                <td>Allows users to add their favorite movies</td>
+                <td>/users/:id/:movieTitle</td>
+                <td>POST</td>
+                <td>
+                    "favoriteMovies": "uuid of Movie"
+                </td>
+                <td>"movieTitle": "title of the movie"</td>
+                <td>"user": {
+                    "id": "value made by uuid",
+                    "name": "new name of the user",
+                    "favoriteMovies": [
+                    {
+                    "id": "uuid of movie"
+                    }]
                     }</td>
-                </tr>
-                <tr>
-                    <td>Allows users to delete their favorite movie</td>
-                    <td>/users/:username/movies/:movieID</td>
-                    <td>DELETE</td>
-                    <td>
-                        "favoriteMovies": "movieUUID to remove"
-                    </td>
-                    <td>"title": "movie title"</td>
-                    <td>Movie title was deleted from user's favorite list</td>
-                </tr>
-                <tr>
-                    <td>Allows users to delete their profile</td>
-                    <td>/users/:id</td>
-                    <td>DELETE</td>
-                    <td>
-                        "id": "user id"
-                    </td>
-                    <td>none</td>
-                    <td>user was deleted</td>
-                </tr>
-            </tbody>
-        </table>
+            </tr>
+            <tr>
+                <td>Allows users to delete their favorite movie</td>
+                <td>/users/:username/movies/:movieID</td>
+                <td>DELETE</td>
+                <td>
+                    "favoriteMovies": "movieUUID to remove"
+                </td>
+                <td>"title": "movie title"</td>
+                <td>Movie title was deleted from user's favorite list</td>
+            </tr>
+            <tr>
+                <td>Allows users to delete their profile</td>
+                <td>/users/:id</td>
+                <td>DELETE</td>
+                <td>
+                    "id": "user id"
+                </td>
+                <td>none</td>
+                <td>user was deleted</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 
 </html>
